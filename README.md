@@ -1,2 +1,2 @@
 # jenkins-ci
-PingCAP automatization using jenkins
+Jenkins-ci works for automatic build and continuous integration for PingCAP's Dev

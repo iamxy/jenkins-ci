@@ -15,12 +15,7 @@ node {
         stage('Test') {
             def branches = [:]
 
-            branches["Unit Test"] = {
-                echo "workspace: ${workspace}"
-                dir("output") {
-                    unstash "source-pingcap"
-                }
-            }
+            apply from: './integration_test_snippet.groovy'
 
             parallel branches
         }

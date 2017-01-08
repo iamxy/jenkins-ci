@@ -15,7 +15,8 @@ node {
         stage('Test') {
             def branches = [:]
 
-            apply from: './integration_test_snippet.groovy'
+            def integrationTest = load('integration_test_snippet.groovy')
+            integrationTest(branches)
 
             parallel branches
         }

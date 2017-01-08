@@ -15,7 +15,7 @@ node {
         stage('Test') {
             def branches = [:]
 
-            def integrationTest = fileLoader.fromGit('integration_test_snippet.groovy', 'https://github.com/iamxy/jenkins-ci.git', 'master', null, '')
+            def integrationTest = fileLoader.fromGit('integration_test_snippet.groovy', 'https://github.com/iamxy/jenkins-ci.git', 'master', null, 'slave')
             integrationTest(branches)
 
             parallel branches

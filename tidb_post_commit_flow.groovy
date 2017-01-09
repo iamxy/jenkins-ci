@@ -2,11 +2,21 @@
 
 node {
     def workspace = pwd()
+    def integrationTest
+    def getChangeLogText
+    def getBuildDuration
 
     catchError {
         stage('Checkout') {
             dir("bank-test"){
                 git url: 'https://github.com/iamxy/jenkins-ci.git'
+            }
+            
+            // common
+            fileLoader.withGit('https://github.com/iamxy/jenkins-ci.git', 'master', null, '') {
+                getChangeLogText = fileLoader.load('get_changelog_text.groovy')
+                getBuildDuration = fileLoader.load('get_build_duration.groovy')
+                integrationTest = fileLoader.load('integration_test_snippet.groovy')
             }
 
             stash includes: 'bank-test/**', name: 'source-pingcap'
@@ -15,7 +25,6 @@ node {
         stage('Test') {
             def branches = [:]
 
-            def integrationTest = fileLoader.fromGit('integration_test_snippet.groovy', 'https://github.com/iamxy/jenkins-ci.git', 'master', null, 'slave')
             integrationTest(branches)
 
             parallel branches
@@ -24,14 +33,9 @@ node {
         currentBuild.result = "SUCCESS"
     }
 
-    def changeLogText = ""
-    for (int i = 0; i < currentBuild.changeSets.size(); i++) {
-        for (int j = 0; j < currentBuild.changeSets[i].items.length; j++) {
-            def commitId = "${currentBuild.changeSets[i].items[j].commitId}"
-            def commitMsg = "${currentBuild.changeSets[i].items[j].msg}"
-            changeLogText += "\n" + commitId.take(7) + " " + commitMsg
-        }
-    }
-
-    echo "${changeLogText}"
+    def buildDuration = getBuildDuration()
+    def changeLogText = getChangeLogText()
+    
+    echo "buildDuration: ${buildDuration}"
+    echo "changeLogText: ${changeLogText}"
 }

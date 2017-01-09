@@ -2,6 +2,7 @@
 
 node {
     def workspace = pwd()
+    def globalTestValue = "test123"
     def integrationTest
     def getChangeLogText
     def getBuildDuration
@@ -35,7 +36,7 @@ node {
 
     def buildDuration = getBuildDuration()
     def changeLogText = getChangeLogText()
-    
+
     echo "buildDuration: ${buildDuration}"
     echo "changeLogText: ${changeLogText}"
 }

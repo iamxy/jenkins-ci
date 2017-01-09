@@ -1,6 +1,6 @@
 def call(branches) {
     branches["Unit Test"] = {
-        echo "workspace: ${workspace}"
+        echo "workspace: ${globalTestValue}"
             dir("output") {
                 unstash "source-pingcap"
             }

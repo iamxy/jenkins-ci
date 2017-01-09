@@ -26,7 +26,7 @@ node {
         stage('Test') {
             def branches = [:]
 
-            integrationTest(branches)
+            integrationTest(branches, globalTestValue)
 
             parallel branches
         }
